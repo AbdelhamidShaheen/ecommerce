@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,12 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+$Locale=App::currentLocale();
 Route::get('/', function () {
-   if( session()->has("Auth")){
-       return ["Auth"];
-       
-   }else{
-       session()->put("Auth","done");
-       return ["unAuth"];
-   }
+    return redirect()->route('home');
+});
+Route::prefix($Locale)->group(function () {
+   Route::get('/home',"HomeController@Index")->name('home');
+   Route::get('/signup',"UserController@SignUp")->name('signup');
+   Route::post('/signup',"UserController@PostSignUp")->name('postsignup');
+   Route::get('/signin',"UserController@SignIn")->name('signin');
+   Route::post('/signin',"UserController@PostSignIn")->name('postsignin');
 });
